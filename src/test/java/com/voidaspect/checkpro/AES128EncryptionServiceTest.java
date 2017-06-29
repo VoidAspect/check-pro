@@ -38,7 +38,7 @@ public class AES128EncryptionServiceTest {
             return encryptionService.decrypt(encryptionService.encrypt(s));
         } catch (Exception e) {
             fail(e.getMessage());
-            throw new RuntimeException("UNREACHABLE", e);
+            throw new RuntimeException("Unreachable statement", e);
         }
     }
 

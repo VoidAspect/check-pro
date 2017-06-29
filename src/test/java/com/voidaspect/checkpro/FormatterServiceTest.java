@@ -42,25 +42,25 @@ public class FormatterServiceTest {
 
     @Test
     public void caseMustKeepStringLength() throws Exception {
-        assertFunctionInvariantByLength(Case.UPPER);
-        assertFunctionInvariantByLength(Case.LOWER);
-        assertFunctionInvariantByLength(Case.NONE);
+        assertStringLengthInvariant(Case.UPPER);
+        assertStringLengthInvariant(Case.LOWER);
+        assertStringLengthInvariant(Case.NONE);
     }
 
     @Test
     public void spacingMustKeepStringLength() throws Exception {
-        assertFunctionInvariantByLength(Spacing.DASHES);
-        assertFunctionInvariantByLength(Spacing.SPACES);
-        assertFunctionInvariantByLength(Spacing.UNDERSCORES);
-        assertFunctionInvariantByLength(Spacing.NONE);
+        assertStringLengthInvariant(Spacing.DASHES);
+        assertStringLengthInvariant(Spacing.SPACES);
+        assertStringLengthInvariant(Spacing.UNDERSCORES);
+        assertStringLengthInvariant(Spacing.NONE);
     }
 
     @Test
     public void trimmingMustBeIdempotent() throws Exception {
-        assertFunctionFunctionIdempotent(Trim.ALL);
-        assertFunctionFunctionIdempotent(Trim.INTERNAL);
-        assertFunctionFunctionIdempotent(Trim.START_AND_END);
-        assertFunctionFunctionIdempotent(Trim.NONE);
+        assertOperationIdempotent(Trim.ALL);
+        assertOperationIdempotent(Trim.INTERNAL);
+        assertOperationIdempotent(Trim.START_AND_END);
+        assertOperationIdempotent(Trim.NONE);
     }
 
     @Test
@@ -80,13 +80,13 @@ public class FormatterServiceTest {
                         formatted.equals(formatterService.formatText(initial, Case.NONE, Trim.NONE, Spacing.NONE)));
     }
 
-    private static void assertFunctionInvariantByLength(Function<String, String> function) {
+    private static void assertStringLengthInvariant(Function<String, String> function) {
         stringTheory()
                 .asWithPrecursor(function)
                 .check((s1, s2) -> s1.length() == s2.length());
     }
 
-    private static void assertFunctionFunctionIdempotent(Function<String, String> function) {
+    private static void assertOperationIdempotent(Function<String, String> function) {
         stringTheory()
                 .as(function)
                 .check(s -> s.equals(function.apply(s)));
@@ -96,7 +96,7 @@ public class FormatterServiceTest {
         return qt().withExamples(10000).forAll(strings()
                 .basicLatinAlphabet()
                 .ofLengthBetween(1, 1000)
-                .andAlwaysTheValues(" aeudh diao  ehod aodo ", "adjio   ie j", "a a a"));
+                .andAlwaysTheValues(" aeudh diao  ehod-aodO ", "aDjDio   ie j", "a_a L"));
     }
 
 }
