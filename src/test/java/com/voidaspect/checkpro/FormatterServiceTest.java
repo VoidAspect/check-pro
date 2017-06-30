@@ -65,6 +65,7 @@ public class FormatterServiceTest {
         String initial = " I am  unformatted-string";
         assertEquals(initial, formatterService.formatText(initial));
         assertEquals(initial, formatterService.formatText(initial, Function.identity()));
+
         qt().withExamples(10000).forAll(stringValues().andAlwaysTheValues(initial),
                 arbitrary().enumValues(Case.class),
                 arbitrary().enumValues(Trim.class),
@@ -142,8 +143,8 @@ public class FormatterServiceTest {
 
     private static void assertOperationIdempotent(Function<String, String> function) {
         stringTheory()
-                .as(function)
-                .check(s -> s.equals(function.apply(s)));
+                .as(function::apply)
+                .check(newS -> newS.equals(function.apply(newS)));
     }
 
     private static TheoryBuilder<String> stringTheory() {
@@ -153,8 +154,8 @@ public class FormatterServiceTest {
     private static Source<String> stringValues() {
         return strings()
                 .basicLatinAlphabet()
-                .ofLengthBetween(1, 1000)
-                .andAlwaysTheValues(" aeudh diao  ehod-aodO ", "aDjDio   ie j", "a_a L");
+                .ofLengthBetween(0, 1000)
+                .andAlwaysTheValues("", " aeudh diao  ehod-aodO ", "aDjDio   ie j", "a_a L");
     }
 
 }

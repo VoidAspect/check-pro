@@ -28,8 +28,7 @@ public class AES128EncryptionServiceTest {
     @Test
     public void testEncryption() throws Exception {
         qt().withExamples(20000).forAll(strings().ascii()
-                .ofLengthBetween(1, 1000)
-                .describedAs(data -> "Input: " + data))
+                .ofLengthBetween(1, 1000))
                 .check(s -> s.equals(encryptDecrypt(s)));
     }
 
