@@ -143,7 +143,7 @@ public class FormatterServiceTest {
 
     private static void assertOperationIdempotent(Function<String, String> function) {
         stringTheory()
-                .as(function::apply)
+                .as(function)
                 .check(newS -> newS.equals(function.apply(newS)));
     }
 
